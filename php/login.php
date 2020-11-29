@@ -35,11 +35,11 @@
                   header("location: welcome.php");
                   $conn->close();
                   die(); //aka exit()/return from this function
-              }else{
+               }else{
    
                   $error = "Your Login Name or Password is invalid"; //NEVER GIVE MORE INFO THAN THIS
    
-              }
+               }
    
             }else {
    
