@@ -9,13 +9,15 @@
 
         if(isset($_SESSION['path_to_file'])){ //AVOID THAT AFTER PAYMENT YOU CAN CHANGE THE ebook_id
 
-            echo"Please download your file before issuing another one!";
-            echo"Follow this link \n";
+            echo"<h1>Please download your file before issuing another one!</h1>";
+            echo"Follow this link to download your ebook!\n";
             echo"<a href = 'download.php' >DOWNLOAD</a>";
+
+            die();
 
         }
 
-        if(!isset($_SESSION['ebook_id'])){
+        if(!isset($_SESSION['ebook_id'])){   //THE USER SHOULD PAY FOR THE SELECTED BOOK! (die if not one has been selected)
             //Attempt to skip previous step: die()!
             header("location:welcome.php");
             die();
@@ -33,7 +35,7 @@
                 goto end;
 
             }
-            echo"Successive payment!";
+            echo"<h1>Successive payment!</h1>";
             //Once paid, retrieve the path to file and set it as SESSION var
             if ($stmt = $conn->prepare('SELECT path FROM ebook_info WHERE id = ?') ){
          
@@ -47,6 +49,8 @@
                    $_SESSION['path_to_file'] = $row['path'];    //HAS TO BE OUTSIDE REACHABLE DIRECTORY, i.e. htdocs!!!!!!!!!!!!!!!!!!!!!!
                    echo"Follow this link to download your ebook!\n";
                    echo"<a href = 'download.php' >DOWNLOAD</a>";
+
+                   die();
        
                 }else {
        
@@ -55,11 +59,11 @@
                 }
        
        
-             }else{
-                // Something is wrong with the sql statement, check to make sure accounts table exists with all 3 fields.
-                echo 'Could not prepare statement!';
-             }
-             $conn->close();
+            }else{
+               // Something is wrong with the sql statement, check to make sure accounts table exists with all 3 fields.
+               echo 'Could not prepare statement!';
+            }
+            $conn->close();
             
   
         } else{
@@ -75,6 +79,8 @@
             echo"Please download your file before issuing another one!";
             echo"Follow this link \n";
             echo"<a href = 'download.php' >DOWNLOAD</a>";
+
+            die();
 
         }
         if( isset($_GET['ebook_id']) )
@@ -128,7 +134,7 @@ end:
                   <label>Card holder name  :</label><input type = "text" name = "cardholder_name" class = "box" /><br/><br />
                   <label>CCV  :</label><input type = "text" name = "ccv" class = "box" /><br/><br />
                   <label>Expiration Date  :</label><input type = "date" name = "expiration_date" class = "box" /><br/><br />
-                  <input type = "submit" value = " Submit "/><br />
+                  <input type = "submit" value = " Buy Ebook "/><br />
                </form>
                
                <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php if(isset($error)) echo $error; ?></div>

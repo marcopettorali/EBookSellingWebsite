@@ -1,4 +1,5 @@
 <?php
+
    include("managment/config.php");
    session_start();
    

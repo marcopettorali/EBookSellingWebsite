@@ -1,4 +1,12 @@
 <?php
+
+   if($_SERVER["HTTPS"] != "on")
+   {
+      header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+      exit();
+   }
+
+
    define('DB_SERVER', 'localhost:3306');
    define('DB_USERNAME', 'root');
    define('DB_PASSWORD', '');

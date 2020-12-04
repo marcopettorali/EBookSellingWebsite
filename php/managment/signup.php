@@ -1,4 +1,11 @@
 <?php
+
+    if($_SERVER["HTTPS"] != "on")
+    {
+    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    exit();
+    }
+
     include("config.php");
     session_start(); //TO CHECK IF NEEDED NO in truth since no usage of _SESSION since even not registered
 
@@ -31,7 +38,6 @@
     if (strlen($_POST['password']) > 20 || strlen($_POST['password']) < 5) {
         exit('Password must be between 5 and 20 characters long!');
     }
-
 
     // We need to check if the account with that username exists.
     if ($stmt = $conn->prepare('SELECT id, password FROM users WHERE username = ?')) {

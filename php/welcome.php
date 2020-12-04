@@ -1,4 +1,5 @@
 <?php
+
    include('managment/session.php');
 
    $a = session_id();
