@@ -9,34 +9,53 @@
     include("config.php");
     session_start(); //TO CHECK IF NEEDED NO in truth since no usage of _SESSION since even not registered
 
+    echo $_SESSION['digit'];
     //ALWAYS CHECK ALSO ON SERVER SIDE, BECAUSE JS ON CLIENT SIDE MAY BE SKIPPED!
 
     // Now we check if the data was submitted, isset() function will check if the data exists.
-    if (!isset($_POST['username'], $_POST['password'], $_POST['email'])) {
+    if (!isset($_POST['username'], $_POST['password'], $_POST['email'],$_POST['captcha'])) {
         // Could not get the data that should have been sent.
-        exit('Please complete the registration form!');
+        $error_code = 1; //Please complete the registration form!
+        header("Location: ../register.php?error=" . urlencode($error_code));
+        exit();
     }
     // Make sure the submitted registration values are not empty.
-    if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email'])) {
+    if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email']) || empty($_POST['captcha'])) {
         // One or more values are empty.
-        exit('Please complete the registration form');
+        $error_code = 1; //Please complete the registration form!
+        header("Location: ../register.php?error=" . urlencode($error_code));
+        exit();
     }
 
     //Check properties on submitted fields
 
     //Email Validation
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        exit('Email is not valid!');
+        $error_code = 2; //Email not valid!
+        header("Location: ../register.php?error=" . urlencode($error_code));
+        exit();
     }
 
     //Invalid Characters Validation for username
     if (preg_match('/[A-Za-z0-9]+/', $_POST['username']) == 0) {
-        exit('Username is not valid!');
+        $error_code = 3; //Username is not valid!!
+        header("Location: ../register.php?error=" . urlencode($error_code));
+        exit();
     }
 
     //Password Length Check
     if (strlen($_POST['password']) > 20 || strlen($_POST['password']) < 5) {
-        exit('Password must be between 5 and 20 characters long!');
+        $error_code = 4; //Password must be between 5 and 20 characters long!
+        header("Location: ../register.php?error=" . urlencode($error_code));
+        exit();
+    }
+
+    //Check captcha!
+    if($_POST['captcha'] != $_SESSION['digit']){
+        $error_code = 5; //Sorry, the CAPTCHA code entered was incorrect!
+        header("Location: ../register.php?error=" . urlencode($error_code));
+        //unset($_SESSION['digit']); Not needed since at reload, a new $_SESSION['digit'] will be created
+        exit();
     }
 
     // We need to check if the account with that username exists.
@@ -68,19 +87,19 @@
                 //Send mail
                 include("mailconfig.php");
                 $mail->IsHTML(true);
-                $mail->AddAddress($_POST['email'], $_POST['username']);
+                $mail->AddAddress(htmlspecialchars($_POST['email'],ENT_QUOTES),htmlspecialchars($_POST['username'],ENT_QUOTES));
                 $mail->SetFrom("systemhackingproject@gmail.com", "Ebook_Registration");
                 //$mail->AddReplyTo("reply-to-email@domain", "reply-to-name");
                 //$mail->AddCC("cc-recipient-email@domain", "cc-recipient-name");
                 $mail->Subject = "Asking for confirmation of ebook registration";
 
-                $activate_link = 'http://localhost/ebook/php/managment/activate.php?email=' . $_POST['email'] . '&code=' . $uniqid;
+                $activate_link = 'http://localhost/ebook/php/managment/activate.php?email=' . htmlspecialchars($_POST['email'],ENT_QUOTES) . '&code=' . $uniqid;
                 $message = '<p>Please click the following link to activate your account: <a href="' . $activate_link . '">' . $activate_link . '</a></p>';
 
                 $mail->MsgHTML($message); 
                 if(!$mail->Send()) {
                     echo "Error while sending Email.";
-                    var_dump($mail);
+                    //var_dump($mail);
                 } else {
                     echo "Email sent successfully";
                 }

@@ -59,33 +59,6 @@
          $error = "Username is required!";
       }
 
-
-      
-/*
-      $myusername = mysqli_real_escape_string($conn,$_POST['username']);
-      $mypassword = mysqli_real_escape_string($conn,$_POST['password']); 
-      
-      $hashed_password = password_hash($mypassword, PASSWORD_DEFAULT);
-
-      echo $hashed_password;
-
-      $sql = "SELECT username FROM users WHERE username = '$myusername' and password = '$hashed_password'";
-      $result = mysqli_query($conn,$sql);
-      
-      $count = mysqli_num_rows($result);
-      
-      // If result matched $myusername and $mypassword, table row must be 1 row
-		
-      if($count == 1) {
-
-         $_SESSION['login_user'] = $myusername;
-         
-         session_regenerate_id(TRUE); //To change session_id a.k.a PHPSESSID otherwise always the same
-
-         header("location: welcome.php");
-      }else {
-         $error = "Your Login Name or Password is invalid";
-      }*/
    }
 ?>
 <html>
@@ -130,6 +103,7 @@
                
                <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php if(isset($error)) echo $error; ?></div>
 					
+
             </div>
 				
          </div>

@@ -7,10 +7,11 @@
     include 'C:/xampp/htdocs/ebook/PHPMailer-master/src/SMTP.php';
 
     $mail = new PHPMailer();
+
     $mail->IsSMTP();
     $mail->Mailer = "smtp";
 
-    $mail->SMTPDebug  = 1;  
+    $mail->SMTPDebug  = 0;  
     $mail->SMTPAuth   = TRUE;
     $mail->SMTPSecure = "tls";
     $mail->Port       = 587;

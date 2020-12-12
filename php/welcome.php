@@ -2,10 +2,6 @@
 
    include('managment/session.php');
 
-   $a = session_id();
-   echo $a;
-
-
 ?>
 <html">
    
@@ -14,7 +10,7 @@
    </head>
    
    <body>
-      <h1>Welcome <?php echo $_SESSION['login_user']; ?></h1> 
+      <h1>Welcome <?php echo htmlspecialchars($_SESSION['login_user'],ENT_QUOTES); ?></h1> <!-- Escaped -->
 
       <h2>Here the list of available ebook: click on them to buy</h2>
 

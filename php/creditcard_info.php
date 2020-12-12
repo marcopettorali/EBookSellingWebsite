@@ -1,8 +1,8 @@
 <?php
     include('managment/session.php');
 
-    $a = session_id();
-    echo $a;
+    //$a = session_id();
+    //echo $a;
 
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         // username and password sent from form 
@@ -35,7 +35,7 @@
                 goto end;
 
             }
-            echo"<h1>Successive payment!</h1>";
+            echo"<h1>Successful payment!</h1>";
             //Once paid, retrieve the path to file and set it as SESSION var
             if ($stmt = $conn->prepare('SELECT path FROM ebook_info WHERE id = ?') ){
          
@@ -54,7 +54,7 @@
        
                 }else {
        
-                   $error = "Your Login Name or Password is invalid"; //NEVER GIVE MORE INFO THAN THIS
+                   $error = "Error in ebook db"; //NEVER GIVE MORE INFO THAN THIS
        
                 }
        

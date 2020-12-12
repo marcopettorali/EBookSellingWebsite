@@ -31,7 +31,7 @@
                if($row['timestamp_creation_recovery_code'] != NULL){
 
                   //CHECK IF EXPIRED OR NOT.. SUPPOSE 1 day valid
-                  if(strtotime('+1 day' , $row['timestamp_creation_recovery_code']) > time() ){
+                  if(strtotime('+1 hour' , $row['timestamp_creation_recovery_code']) > time() ){
                      
                      //echo "Not expired!"; DO NOT SEND TOO MUCH INFO
                      //Hence send it again
@@ -53,8 +53,6 @@
             $recovery_code = bin2hex(random_bytes(16));
             $current_timestamp = time();
 
-            echo $current_timestamp;
-
             $stmt->bind_param('sss', $recovery_code,$current_timestamp,$_POST['username']);
             $stmt->execute();
             
@@ -64,8 +62,6 @@
 
         //Send the recovery_code via email
 send_mail:
-         echo $recovery_code;
-         echo $email;
 
          //Send mail
          include("managment/mailconfig.php");
@@ -84,12 +80,11 @@ send_mail:
             echo "Error while sending Email.";
             var_dump($mail);
          } else {
-            echo "Email sent successfully";
+            echo "Email sent successfully<br>";
+            echo 'Please check your email to reinsert a new password!<br>';
+            $conn->close();
+            exit();
          }
-
-
-
-         echo 'Please check your email to reinsert a new password!';
 
 end:
          $conn->close();
@@ -98,33 +93,6 @@ end:
          $error = "Username is required!";
       }
 
-
-      
-/*
-      $myusername = mysqli_real_escape_string($conn,$_POST['username']);
-      $mypassword = mysqli_real_escape_string($conn,$_POST['password']); 
-      
-      $hashed_password = password_hash($mypassword, PASSWORD_DEFAULT);
-
-      echo $hashed_password;
-
-      $sql = "SELECT username FROM users WHERE username = '$myusername' and password = '$hashed_password'";
-      $result = mysqli_query($conn,$sql);
-      
-      $count = mysqli_num_rows($result);
-      
-      // If result matched $myusername and $mypassword, table row must be 1 row
-		
-      if($count == 1) {
-
-         $_SESSION['login_user'] = $myusername;
-         
-         session_regenerate_id(TRUE); //To change session_id a.k.a PHPSESSID otherwise always the same
-
-         header("location: welcome.php");
-      }else {
-         $error = "Your Login Name or Password is invalid";
-      }*/
    }
 ?>
 <html>

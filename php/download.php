@@ -12,6 +12,7 @@
 
     unset($_SESSION['path_to_file']);
 
+    //To download the file
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename=' . basename($file));

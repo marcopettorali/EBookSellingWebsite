@@ -1,9 +1,6 @@
 <?php
    include('managment/session.php');
 
-   $a = session_id();
-   echo $a;
-
    if($_SERVER["REQUEST_METHOD"] == "POST") {
     // old password and new password sent from form 
 
